@@ -2,8 +2,8 @@ from board import Board
 
 
 class Minesweeper:
-    def __init__(self):
-        self.board = Board()
+    def __init__(self, rows=6, cols=6, mines=6):
+        self.board = Board(rows=rows, cols=cols, mines=mines)
 
     def display(self, reveal_mines=False):
         b = self.board
@@ -27,6 +27,21 @@ class Minesweeper:
 
     def run(self):
         print("Minesweeper")
+
+        print("Select difficulty:")
+        print("1. Easy (6x6, 6 mines)")
+        print("2. Medium (8x8, 10 mines)")
+        print("3. Hard (10x10, 15 mines)")
+
+        choice = input("Choose (1-3): ").strip()
+
+        if choice == "2":
+            self.board = Board(8, 8, 10)
+        elif choice == "3":
+            self.board = Board(10, 10, 15)
+        else:
+            self.board = Board(6, 6, 6)
+
         print("Commands: r row col | f row col | q")
         while True:
             self.display()
@@ -52,8 +67,12 @@ class Minesweeper:
 
             if self.board.reveal((r, c)):
                 self.display(reveal_mines=True)
+                print(f"Revealed ({r + 1}, {c + 1})")
                 print("BOOM! You hit a mine.")
                 return
+
+            print(f"Revealed ({r + 1}, {c + 1})")
+
             if self.board.won():
                 self.display()
                 print("You cleared the board!")
